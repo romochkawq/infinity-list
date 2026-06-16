@@ -1,0 +1,35 @@
+{
+	"name": "infinity-list",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Two-pane selector over 1,000,000 items with server-side selection state",
+	"workspaces": [
+		"libs/*",
+		"backend",
+		"frontend"
+	],
+	"scripts": {
+		"dev": "concurrently -n backend,frontend -c blue,green \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+		"build": "npm run build -w @infinity/common && npm run build -w backend && npm run build -w frontend",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --write \"libs/**/src/**/*.ts\"",
+		"format:check": "prettier --check \"libs/**/src/**/*.ts\""
+	},
+	"overrides": {
+		"shell-quote": "^1.8.4"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.17.0",
+		"concurrently": "^9.1.0",
+		"eslint": "^9.17.0",
+		"eslint-plugin-import": "^2.31.0",
+		"prettier": "^3.4.2",
+		"typescript": "^5.7.2",
+		"typescript-eslint": "^8.18.1"
+	},
+	"engines": {
+		"node": ">=20"
+	}
+}
