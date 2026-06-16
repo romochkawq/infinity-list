@@ -8,6 +8,12 @@ npm install
 npm run dev
 ```
 
+```bash
+docker compose up --build
+```
+
+После запуска: фронт — http://localhost:8080, бэк — http://localhost:3000, Swagger — http://localhost:3000/docs.
+
 ## API
 
 | Метод  | Путь                       | Назначение                                   |
