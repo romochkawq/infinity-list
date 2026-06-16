@@ -1,5 +1,12 @@
+import { dirname, resolve as resolvePath } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { config as loadEnv } from 'dotenv';
+
 import { createApp } from './app';
 import { loadConfig } from './infrastructure/config';
+
+loadEnv({ path: resolvePath(dirname(fileURLToPath(import.meta.url)), '../../.env') });
 
 async function bootstrap(): Promise<number> {
 	const config = loadConfig();
