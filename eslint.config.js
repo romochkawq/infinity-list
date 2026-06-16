@@ -17,6 +17,9 @@ export default tseslint.config(
 		plugins: {
 			import: importPlugin,
 		},
+		settings: {
+			'import/internal-regex': '^@(app|pages|widgets|features|entities|shared)/',
+		},
 		languageOptions: {
 			parserOptions: {
 				ecmaVersion: 'latest',

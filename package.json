@@ -14,8 +14,8 @@
 		"build": "npm run build -w @infinity/common && npm run build -w backend && npm run build -w frontend",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
-		"format": "prettier --write \"libs/**/src/**/*.ts\" \"backend/src/**/*.ts\"",
-		"format:check": "prettier --check \"libs/**/src/**/*.ts\" \"backend/src/**/*.ts\""
+		"format": "prettier --write \"libs/**/src/**/*.ts\" \"backend/src/**/*.ts\" \"frontend/src/**/*.{ts,tsx,css}\"",
+		"format:check": "prettier --check \"libs/**/src/**/*.ts\" \"backend/src/**/*.ts\" \"frontend/src/**/*.{ts,tsx,css}\""
 	},
 	"overrides": {
 		"shell-quote": "^1.8.4"
