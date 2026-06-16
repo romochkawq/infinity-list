@@ -1,0 +1,9 @@
+.status {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 24px 16px;
+	color: var(--text-muted);
+	font-size: 13px;
+}
