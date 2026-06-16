@@ -9,11 +9,16 @@ interface SelectionState {
 	addCustomId: (id: ItemId) => void;
 	selectOptimistic: (id: ItemId) => void;
 	deselectOptimistic: (id: ItemId) => void;
-	reconcile: (serverSelected: ReadonlySet<ItemId>) => void;
+	clearPending: (ids: ItemId[]) => void;
+	clearAdded: (ids: ItemId[]) => void;
 }
 
 function without(list: ItemId[], id: ItemId): ItemId[] {
 	return list.filter((value) => value !== id);
+}
+
+function withoutMany(list: ItemId[], ids: ReadonlySet<ItemId>): ItemId[] {
+	return list.filter((value) => !ids.has(value));
 }
 
 export const useSelectionStore = create<SelectionState>((set) => ({
@@ -42,20 +47,15 @@ export const useSelectionStore = create<SelectionState>((set) => ({
 				: [...state.pendingDeselected, id],
 		})),
 
-	reconcile: (serverSelected) =>
+	clearPending: (ids) =>
 		set((state) => {
-			const pendingSelected = state.pendingSelected.filter(
-				(id) => !serverSelected.has(id),
-			);
-			const pendingDeselected = state.pendingDeselected.filter((id) =>
-				serverSelected.has(id),
-			);
-			if (
-				pendingSelected.length === state.pendingSelected.length &&
-				pendingDeselected.length === state.pendingDeselected.length
-			) {
-				return state;
-			}
-			return { pendingSelected, pendingDeselected };
+			const set_ = new Set(ids);
+			return {
+				pendingSelected: withoutMany(state.pendingSelected, set_),
+				pendingDeselected: withoutMany(state.pendingDeselected, set_),
+			};
 		}),
+
+	clearAdded: (ids) =>
+		set((state) => ({ addedIds: withoutMany(state.addedIds, new Set(ids)) })),
 }));

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useEffect, useMemo } from 'react';
 
 import { AddQueue, MutationQueue } from '@shared/lib/queue';
+import { useSelectionStore } from '@shared/store/selection-store';
 
 import { QueueContext } from './queue-context';
 
@@ -16,14 +17,18 @@ export function QueueProvider({ children }: { children: ReactNode }) {
 			queryClient.invalidateQueries({ queryKey: ['items', 'selected'] });
 
 		const addQueue = new AddQueue({
-			onFlushed: () => {
-				invalidateAvailable().catch(() => undefined);
+			onFlushed: (ids) => {
+				invalidateAvailable()
+					.then(() => useSelectionStore.getState().clearAdded(ids))
+					.catch(() => undefined);
 			},
 		});
 		const mutationQueue = new MutationQueue({
-			onFlushed: () => {
-				invalidateAvailable().catch(() => undefined);
-				invalidateSelected().catch(() => undefined);
+			onFlushed: (ops) => {
+				const ids = ops.map((op) => op.itemId);
+				Promise.all([invalidateAvailable(), invalidateSelected()])
+					.then(() => useSelectionStore.getState().clearPending(ids))
+					.catch(() => undefined);
 			},
 		});
 		return { addQueue, mutationQueue };
