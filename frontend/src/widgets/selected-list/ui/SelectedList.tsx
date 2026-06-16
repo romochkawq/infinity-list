@@ -7,6 +7,10 @@ import {
 	type DragEndEvent,
 } from '@dnd-kit/core';
 import {
+	restrictToFirstScrollableAncestor,
+	restrictToVerticalAxis,
+} from '@dnd-kit/modifiers';
+import {
 	arrayMove,
 	SortableContext,
 	verticalListSortingStrategy,
@@ -90,6 +94,10 @@ export function SelectedList() {
 				<DndContext
 					sensors={sensors}
 					collisionDetection={closestCenter}
+					modifiers={[
+						restrictToVerticalAxis,
+						restrictToFirstScrollableAncestor,
+					]}
 					onDragEnd={handleDragEnd}
 				>
 					<SortableContext items={view} strategy={verticalListSortingStrategy}>
