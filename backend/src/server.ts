@@ -1,20 +1,19 @@
 import { createApp } from './app';
 import { loadConfig } from './infrastructure/config';
 
-async function bootstrap(): Promise<void> {
+async function bootstrap(): Promise<number> {
 	const config = loadConfig();
 	const app = createApp(config);
 
-	await new Promise<void>((resolve) => {
-		app.listen(config.port, () => {
-			console.log(`Backend listening on http://localhost:${config.port}`);
-			console.log(`Swagger UI on http://localhost:${config.port}/docs`);
-			resolve();
-		});
+	return new Promise<number>(resolve => {
+		app.listen(config.port, () => resolve(config.port));
 	});
 }
 
-bootstrap().catch((error: unknown) => {
-	console.error('Failed to start backend:', error);
+bootstrap().then((port) => {
+	console.log(`Backend listening on http://localhost:${port}`);
+	console.log(`Swagger UI on http://localhost:${port}/docs`);
+}).catch(e => {
+	console.error('Failed to start backend:', e);
 	process.exit(1);
 });
