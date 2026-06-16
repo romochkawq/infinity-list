@@ -1,0 +1,19 @@
+.row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 14px;
+	border-bottom: 1px solid var(--border);
+	background: var(--surface);
+}
+
+.id {
+	flex: 1;
+	font-variant-numeric: tabular-nums;
+	font-size: 14px;
+	color: var(--text);
+}
+
+.action {
+	flex: none;
+}
