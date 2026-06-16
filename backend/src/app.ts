@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
 import express from 'express';
 import type { Express } from 'express';
 import swaggerUi from 'swagger-ui-express';
@@ -37,6 +40,9 @@ export function createApp(
 
 	const app = express();
 	app.disable('x-powered-by');
+	if (config.trustProxy > 0) {
+		app.set('trust proxy', config.trustProxy);
+	}
 	app.use(...securityMiddleware(config));
 	app.use(express.json({ limit: config.jsonBodyLimit }));
 	app.use(httpLogger);
@@ -56,6 +62,19 @@ export function createApp(
 
 	app.use('/api/items', createItemsRouter(itemsController));
 	app.use('/api/selection', createSelectionRouter(selectionController));
+
+	if (config.staticDir && existsSync(config.staticDir)) {
+		const staticDir = config.staticDir;
+		const indexHtml = join(staticDir, 'index.html');
+		app.use(express.static(staticDir));
+		app.get('*', (req, res, next) => {
+			if (req.path.startsWith('/api') || req.path.startsWith('/docs')) {
+				next();
+				return;
+			}
+			res.sendFile(indexHtml);
+		});
+	}
 
 	app.use(notFoundHandler);
 	app.use(errorHandler);

@@ -9,6 +9,8 @@ const envSchema = z.object({
 	RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
 	RATE_LIMIT_MAX: z.coerce.number().int().positive().default(300),
 	JSON_BODY_LIMIT: z.string().default('100kb'),
+	TRUST_PROXY: z.coerce.number().int().min(0).default(0),
+	STATIC_DIR: z.string().optional(),
 });
 
 export interface AppConfig {
@@ -17,6 +19,8 @@ export interface AppConfig {
 	corsOrigins: string[];
 	rateLimit: { windowMs: number; max: number };
 	jsonBodyLimit: string;
+	trustProxy: number;
+	staticDir: string | undefined;
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
@@ -37,5 +41,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
 			.filter((origin) => origin.length > 0),
 		rateLimit: { windowMs: data.RATE_LIMIT_WINDOW_MS, max: data.RATE_LIMIT_MAX },
 		jsonBodyLimit: data.JSON_BODY_LIMIT,
+		trustProxy: data.TRUST_PROXY,
+		staticDir: data.STATIC_DIR,
 	};
 }
