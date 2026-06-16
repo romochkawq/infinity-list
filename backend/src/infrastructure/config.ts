@@ -3,7 +3,9 @@ import { z } from 'zod';
 const envSchema = z.object({
 	NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 	PORT: z.coerce.number().int().positive().default(3000),
-	CORS_ORIGIN: z.string().default('http://localhost:5173'),
+	CORS_ORIGIN: z
+		.string()
+		.default('http://localhost:5173,http://127.0.0.1:5173'),
 	RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
 	RATE_LIMIT_MAX: z.coerce.number().int().positive().default(300),
 	JSON_BODY_LIMIT: z.string().default('100kb'),
