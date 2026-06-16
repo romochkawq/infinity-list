@@ -1,14 +1,9 @@
 import type { GetSelectedQuery, ItemId, OffsetPage } from '@infinity/common';
 
-import type { StateRepository } from '../domain/ports.js';
+import type { StateRepository } from '../domain/ports';
 
-import { clampLimit, clampOffset } from './pagination.js';
+import { clampLimit, clampOffset } from './pagination';
 
-/**
- * Правая панель «выбранные»: индексная пагинация по явному `selectedOrder`
- * с substring-фильтром по ID. Возвращает срез `offset/limit`, общий `total`
- * (по отфильтрованному списку) и `hasMore`.
- */
 export class GetSelected {
 	constructor(private readonly repo: StateRepository) {}
 

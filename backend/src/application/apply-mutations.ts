@@ -1,13 +1,8 @@
 import type { ApplyMutationsRequest, ApplyMutationsResponse } from '@infinity/common';
 
-import { badRequest } from '../domain/errors.js';
-import type { StateRepository } from '../domain/ports.js';
+import { badRequest } from '../domain/errors';
+import type { StateRepository } from '../domain/ports';
 
-/**
- * Батч мутаций select/deselect/reorder, применяемых строго по порядку.
- * Операции читают результат предыдущих в этом же батче (live-состояние),
- * что важно для последовательностей вида add → select → reorder.
- */
 export class ApplyMutations {
 	constructor(private readonly repo: StateRepository) {}
 

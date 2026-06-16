@@ -24,7 +24,6 @@ export default tseslint.config(
 			},
 		},
 		rules: {
-			// Запрет `void fn()` для fire-and-forget — фиксированное соглашение проекта.
 			'no-void': 'error',
 			'@typescript-eslint/no-floating-promises': 'off',
 			'@typescript-eslint/consistent-type-imports': [

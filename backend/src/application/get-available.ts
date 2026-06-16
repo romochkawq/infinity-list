@@ -1,16 +1,10 @@
 import { MAX_BASE_ID } from '@infinity/common';
 import type { CursorPage, GetAvailableQuery, ItemId } from '@infinity/common';
 
-import type { StateRepository } from '../domain/ports.js';
+import type { StateRepository } from '../domain/ports';
 
-import { clampLimit } from './pagination.js';
+import { clampLimit } from './pagination';
 
-/**
- * Левая панель «доступные»: курсорная пагинация по натуральному порядку ID
- * (`1..MAX_BASE_ID`, затем отсортированные custom-ID), исключая выбранные и
- * применяя substring-фильтр. Курсор `cursor` — последний отданный ID (exclusive),
- * поэтому стабилен при мутациях общего состояния.
- */
 export class GetAvailable {
 	constructor(private readonly repo: StateRepository) {}
 
@@ -25,7 +19,6 @@ export class GetAvailable {
 		const matches = (id: ItemId): boolean =>
 			!selected.has(id) && (search === '' || String(id).includes(search));
 
-		// Берём limit + 1, чтобы достоверно определить hasMore без отдельного запроса.
 		const want = limit + 1;
 		const collected: ItemId[] = [];
 

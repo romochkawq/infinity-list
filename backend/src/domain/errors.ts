@@ -1,10 +1,5 @@
 import { ErrorCode } from '@infinity/common';
 
-/**
- * Единственный базовый класс ошибок приложения. Несёт стабильный строковый
- * `code` (контракт с фронтом) и HTTP `statusCode` для error-middleware.
- * Без дерева подклассов — только фабрики ниже.
- */
 export class AppError extends Error {
 	constructor(
 		readonly code: ErrorCode,

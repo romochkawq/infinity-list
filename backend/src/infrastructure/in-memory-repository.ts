@@ -1,13 +1,8 @@
 import type { ItemId } from '@infinity/common';
 
-import type { StateRepository } from '../domain/ports.js';
-import { SelectionState } from '../domain/selection-state.js';
+import type { StateRepository } from '../domain/ports';
+import { SelectionState } from '../domain/selection-state';
 
-/**
- * In-memory реализация порта: тонкий async-адаптер над доменным агрегатом
- * `SelectionState`. Состояние общее на процесс (по ТЗ — без БД). Сигнатуры
- * async, поэтому позже подменяется на, например, `PostgresStateRepository`.
- */
 export class InMemoryRepository implements StateRepository {
 	private readonly state = new SelectionState();
 
